@@ -11,7 +11,7 @@ contract Person {
         return name;
     }
 
-    function setName(string _name) public returns(string) {
+    function setName(string _name) public {
         name = _name;
         return name;
     }

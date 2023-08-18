@@ -10,8 +10,8 @@ let person, accounts;
 before(async () => {
     accounts = await web3.eth.getAccounts();
     const personContract = compile('Person');
-    person = await new web3.eth.Contract(JSON.parse(personContract.interface))
-    .deploy({data: personContract.bytecode, arguments: ["Alice"]})
+    person = await new web3.eth.Contract(personContract.abi)
+    .deploy({data: personContract.evm.bytecode.object, arguments: ["Alice"]})
     .send({from: accounts[0], gas: "500000"});
 });
 

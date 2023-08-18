@@ -3,10 +3,28 @@ const fs = require('fs');
 const solc = require('solc');
 
 function compile(contractName) {
-    const personPath = path.resolve(__dirname, 'contracts', contractName + '.sol');
-    const personSource = fs.readFileSync(personPath, 'utf8');
+    const sourcepath = path.resolve(__dirname, 'contracts', contractName + '.sol');
+    const source = fs.readFileSync(sourcepath, 'utf8');
 
-    return solc.compile(personSource, 1).contracts[':' + contractName];
+    const input = {
+        language: 'Solidity',
+        sources: {},
+        settings: {
+            outputSelection: {
+                '*': {
+                    '*': ['*'],
+                },
+            },
+        },
+    };
+
+    input.sources[contractName] = {
+        content: source
+    }
+    const compiledObject = JSON.parse(solc.compile(JSON.stringify(input)));
+    const obj = compiledObject.contracts[contractName];
+    console.log(obj);
+    return obj[contractName];
 }
 
 module.exports = {compile};
